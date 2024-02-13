@@ -20,21 +20,21 @@ public class AuthenticateUserService {
         this.authenticateUserRepository = authenticateUserRepository;
     }
 
-    public Boolean authenticateUser(AuthenticateUserRequest request) {
+    public Boolean authenticateUser(AuthenticateUserRequest request) throws EntityServiceException {
         try {
             AuthenticateUserRequest userCredential = authenticateUserRepository.authenticateUser(request.getUserName());
             if (ObjectUtils.isEmpty(userCredential)) {
                 throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.AUTHENTICATE_NO_USER_FOUND,"NO USER FOUND exception");
             } else {
                 if(userCredential.getPassword().equals(request.getPassword())) {
-                    return true;
+                    return Boolean.TRUE;
                 } else {
-                    return false;
+                    return Boolean.FALSE;
                 }
             }
         } catch (Exception exception) {
             log.error("Error while authenticating user", exception);
-            return false;
+            throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.AUTHENTICATE_NO_USER_FOUND,"NO USER FOUND exception");
         }
     }
 }
