@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lbc.localbusinessconnect.mapper.authenticate.AuthenticateUserMapper">
+
+    <select id="authenticateUser" useCache="false" resultMap="authenticateUserMap">
+        SELECT USERNAME, PASSWORD
+        FROM USER_CREDENTIAL
+        WHERE USERNAME=#{userName}
+    </select>
+
+    <resultMap id="authenticateUserMap" type="com.lbc.localbusinessconnect.model.request.AuthenticateUserRequest">
+        <result column="USERNAME" property="userName" />
+        <result column="PASSWORD" property="password" />
+    </resultMap>
+</mapper>
