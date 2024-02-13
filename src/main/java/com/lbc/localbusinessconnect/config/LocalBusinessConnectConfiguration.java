@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Configuration;
 public class LocalBusinessConnectConfiguration {
 
     @Bean
-    public AuthenticateUserService authenticateUserService() {
-        return new AuthenticateUserService();
+    public AuthenticateUserService authenticateUserService(AuthenticateUserRepository authenticateUserRepository) {
+        return new AuthenticateUserService(authenticateUserRepository);
     }
 
     @Bean
