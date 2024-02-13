@@ -4,7 +4,5 @@ import lombok.Data;
 import lombok.Getter;
 
 @Data
-public class AuthenticateUserResponse {
-
-    boolean transactionSuccess;
+public class AuthenticateUserResponse extends GenericResponse {
 }

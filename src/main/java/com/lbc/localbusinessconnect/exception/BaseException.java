@@ -1,5 +1,8 @@
 package com.lbc.localbusinessconnect.exception;
 
+import lombok.Data;
+
+@Data
 public class BaseException extends Exception {
 
     private String errorType;
