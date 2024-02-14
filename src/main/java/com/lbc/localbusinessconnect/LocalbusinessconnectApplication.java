@@ -15,6 +15,7 @@ public class LocalbusinessconnectApplication {
 
 	public static void main(String[] args) {
 		//var applicationContext = new AnnotationConfigApplicationContext(LocalBusinessConnectConfiguration.class);
+		System.setProperty("logging.config", "classpath:logback.xml");
 		SpringApplication.run(LocalbusinessconnectApplication.class, args);
 	}
 
