@@ -2,10 +2,12 @@ package com.lbc.localbusinessconnect.service.authenticate;
 
 import com.lbc.localbusinessconnect.constant.ErrorConstant;
 import com.lbc.localbusinessconnect.exception.EntityServiceException;
-import com.lbc.localbusinessconnect.model.UserCredential;
-import com.lbc.localbusinessconnect.model.request.AuthenticateUserRequest;
+import com.lbc.localbusinessconnect.model.UserCredentialDetails;
+import com.lbc.localbusinessconnect.model.request.UserCredentialRequest;
 import com.lbc.localbusinessconnect.repository.authenticate.AuthenticateUserRepository;
+import com.lbc.localbusinessconnect.util.Transformer;
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.OracleDatabaseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.ObjectUtils;
 
@@ -17,13 +19,16 @@ public class AuthenticateUserService {
     @Autowired
     AuthenticateUserRepository authenticateUserRepository;
 
+    @Autowired
+    Transformer transformer;
+
     public AuthenticateUserService(AuthenticateUserRepository authenticateUserRepository) {
         this.authenticateUserRepository = authenticateUserRepository;
     }
 
-    public Boolean authenticateUser(AuthenticateUserRequest request) throws EntityServiceException {
+    public Boolean authenticateUser(UserCredentialRequest request) throws EntityServiceException {
         try {
-            AuthenticateUserRequest userCredential = authenticateUserRepository.authenticateUser(request.getUserName());
+            UserCredentialRequest userCredential = authenticateUserRepository.authenticateUser(request.getUserName());
             if (ObjectUtils.isEmpty(userCredential)) {
                 throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.AUTHENTICATE_NO_USER_FOUND,"NO USER FOUND exception");
             } else {
@@ -39,13 +44,15 @@ public class AuthenticateUserService {
         }
     }
 
-    public void registerUserCredentials(AuthenticateUserRequest request) throws EntityServiceException {
+    public void registerUserCredentials(UserCredentialRequest request) throws EntityServiceException {
         try {
-            UserCredential userCredential = new UserCredential();
-            authenticateUserRepository.registerUserCredentials(userCredential);
-        } catch (SQLException ex) {
+            UserCredentialDetails userCredentialDetails = transformer.getUserCredentialsDetails(
+                    request.getUserName(), request.getPassword(), "customer", "active"
+            );
+            authenticateUserRepository.registerUserCredentials(userCredentialDetails);
+        } catch (Exception ex) {
             log.error("Error while inserting user credentials : {}", ex.getMessage());
-            throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.USER_REGISTRATION_FAILURE,"USER REGISTRATION Exception");
+            throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.USER_REGISTRATION_FAILURE,"username "+request.getUserName()+" already present");
         }
     }
 }

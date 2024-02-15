@@ -1,15 +1,15 @@
 package com.lbc.localbusinessconnect.mapper.authenticate;
 
-import com.lbc.localbusinessconnect.model.UserCredential;
-import com.lbc.localbusinessconnect.model.request.AuthenticateUserRequest;
-import org.apache.ibatis.annotations.Mapper;
+import com.lbc.localbusinessconnect.model.UserCredentialDetails;
+import com.lbc.localbusinessconnect.model.request.UserCredentialRequest;
+import oracle.jdbc.OracleDatabaseException;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 
 public interface AuthenticateUserMapper {
 
-    AuthenticateUserRequest authenticateUser(@Param("userName") String userName);
+    UserCredentialRequest authenticateUser(@Param("userName") String userName);
 
-    void registerUserCredentials(@Param("userCredential") UserCredential userCredential) throws SQLException;
+    void registerUserCredentials(@Param("userCredentialDetails") UserCredentialDetails userCredentialDetails) throws Exception;
 }
