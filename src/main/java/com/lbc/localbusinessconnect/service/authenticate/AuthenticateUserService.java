@@ -2,6 +2,7 @@ package com.lbc.localbusinessconnect.service.authenticate;
 
 import com.lbc.localbusinessconnect.constant.ErrorConstant;
 import com.lbc.localbusinessconnect.exception.EntityServiceException;
+import com.lbc.localbusinessconnect.model.UserCredential;
 import com.lbc.localbusinessconnect.model.request.AuthenticateUserRequest;
 import com.lbc.localbusinessconnect.repository.authenticate.AuthenticateUserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +36,16 @@ public class AuthenticateUserService {
         } catch (Exception exception) {
             log.error("Error while authenticating user", exception);
             throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.AUTHENTICATE_NO_USER_FOUND,"NO USER FOUND exception");
+        }
+    }
+
+    public void registerUserCredentials(AuthenticateUserRequest request) throws EntityServiceException {
+        try {
+            UserCredential userCredential = new UserCredential();
+            authenticateUserRepository.registerUserCredentials(userCredential);
+        } catch (SQLException ex) {
+            log.error("Error while inserting user credentials", ex);
+            throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.USER_REGISTRATION_FAILURE,"USER REGISTRATION Exception");
         }
     }
 }

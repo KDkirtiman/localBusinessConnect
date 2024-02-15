@@ -5,13 +5,32 @@
 <mapper namespace="com.lbc.localbusinessconnect.mapper.authenticate.AuthenticateUserMapper">
 
     <select id="authenticateUser" useCache="false" resultMap="authenticateUserMap">
-        SELECT USERNAME, PASSWORD
+        SELECT USERID, PASSWORD
         FROM USER_CREDENTIAL
-        WHERE USERNAME=#{userName}
+        WHERE USERID=#{userName}
     </select>
 
     <resultMap id="authenticateUserMap" type="com.lbc.localbusinessconnect.model.request.AuthenticateUserRequest">
-        <result column="USERNAME" property="userName" />
+        <result column="USERID" property="userName" />
         <result column="PASSWORD" property="password" />
     </resultMap>
+
+    <insert id="registerUserCredentials">
+        INSERT INTO
+        USER_CREDENTIAL (
+            USERID,
+            PASSWORD,
+            ACCOUNTTYPE,
+            ACCOUNTSTATUS,
+            CREATEDDATE,
+            LASTLOGIN
+        ) VALUES (
+            #{userCredential.userId},
+            #{userCredential.password},
+            #{userCredential.accountType},
+            #{userCredential.accountStatus},
+            SYSDATE,
+            SYSDATE
+        )
+    </insert>
 </mapper>
