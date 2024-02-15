@@ -30,7 +30,7 @@ public class AuthenticateUserController {
             response.setTransactionSuccess(authenticateUser);
             return response;
         } catch(EntityServiceException exception ){
-            log.error("Error while authenticating user", exception);
+            log.error("Error while authenticating user : {}", exception.getMessage());
             response.setError(new ErrorResponse(exception.getErrorType(), exception.getErrorMsg()));
             response.setTransactionSuccess(Boolean.FALSE);
             return response;
