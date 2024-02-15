@@ -30,12 +30,12 @@ public class AuthenticateUserService {
                 if(userCredential.getPassword().equals(request.getPassword())) {
                     return Boolean.TRUE;
                 } else {
-                    return Boolean.FALSE;
+                    throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.AUTHENTICATE_PASSWORD_INCORRECT,"Incorrect Password entered");
                 }
             }
-        } catch (Exception exception) {
-            log.error("Error while authenticating user", exception);
-            throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.AUTHENTICATE_NO_USER_FOUND,"NO USER FOUND exception");
+        } catch (EntityServiceException exception) {
+            log.error("Error while authenticating user : {}", exception);
+            throw new EntityServiceException(exception.getErrorType(), exception.getErrorMsg(), exception.getMessage());
         }
     }
 
@@ -44,7 +44,7 @@ public class AuthenticateUserService {
             UserCredential userCredential = new UserCredential();
             authenticateUserRepository.registerUserCredentials(userCredential);
         } catch (SQLException ex) {
-            log.error("Error while inserting user credentials", ex);
+            log.error("Error while inserting user credentials : {}", ex.getMessage());
             throw new EntityServiceException(ErrorConstant.AUTHENTICATE_SERVICE_EXCEPTION,ErrorConstant.USER_REGISTRATION_FAILURE,"USER REGISTRATION Exception");
         }
     }
