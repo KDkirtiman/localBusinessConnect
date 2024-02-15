@@ -14,12 +14,13 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @CrossOrigin(origins="*")
+@RequestMapping("/autheticate")
 public class AuthenticateUserController {
 
     @Autowired
     AuthenticateUserService authenticateUserService;
 
-    @PostMapping("/authenticateUser")
+    @PostMapping("/user")
     public AuthenticateUserResponse authenticateUser(@RequestBody AuthenticateUserRequest request) {
 
         AuthenticateUserResponse response = new AuthenticateUserResponse();
@@ -30,10 +31,26 @@ public class AuthenticateUserController {
             return response;
         } catch(EntityServiceException exception ){
             log.error("Error while authenticating user", exception);
-            ErrorResponse errorResponse = new ErrorResponse();
-            errorResponse.setErrorCode(exception.getErrorType());
-            errorResponse.setErrorMsg(exception.getErrorMsg());
-            response.setError(errorResponse);
+            response.setError(new ErrorResponse(exception.getErrorType(), exception.getErrorMsg()));
+            response.setTransactionSuccess(Boolean.FALSE);
+            return response;
+        }
+    }
+
+
+
+    @PostMapping("/registerUserCredentials")
+    public AuthenticateUserResponse registerUserCredentials(@RequestBody AuthenticateUserRequest request) {
+
+        AuthenticateUserResponse response = new AuthenticateUserResponse();
+        try{
+            log.info("User logged in : {}",request.getUserName());
+            authenticateUserService.registerUserCredentials(request);
+            response.setTransactionSuccess(true);
+            return response;
+        } catch(EntityServiceException exception ){
+            log.error("Error while authenticating user", exception);
+            response.setError(new ErrorResponse(exception.getErrorType(), exception.getErrorMsg()));
             response.setTransactionSuccess(Boolean.FALSE);
             return response;
         }
