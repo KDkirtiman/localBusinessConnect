@@ -10,7 +10,7 @@
         WHERE USERID=#{userName}
     </select>
 
-    <resultMap id="authenticateUserMap" type="com.lbc.localbusinessconnect.model.request.AuthenticateUserRequest">
+    <resultMap id="authenticateUserMap" type="com.lbc.localbusinessconnect.model.request.UserCredentialRequest">
         <result column="USERID" property="userName" />
         <result column="PASSWORD" property="password" />
     </resultMap>
@@ -25,10 +25,10 @@
             CREATEDDATE,
             LASTLOGIN
         ) VALUES (
-            #{userCredential.userId},
-            #{userCredential.password},
-            #{userCredential.accountType},
-            #{userCredential.accountStatus},
+            #{userCredentialDetails.userId},
+            #{userCredentialDetails.password},
+            #{userCredentialDetails.accountType},
+            #{userCredentialDetails.accountStatus},
             SYSDATE,
             SYSDATE
         )

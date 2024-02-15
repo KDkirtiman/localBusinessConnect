@@ -8,8 +8,11 @@ public class ErrorResponse {
     public String errorCode;
     public String errorMsg;
 
-    public ErrorResponse(String errorCode, String errorMsg) {
+    public String message;
+
+    public ErrorResponse(String errorCode, String errorMsg, String message) {
         this.errorCode = errorCode;
         this.errorMsg = errorMsg;
+        this.message = message;
     }
 }
