@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 @RestController
 @CrossOrigin(origins="*")
-@RequestMapping("/autheticate")
+@RequestMapping("/authenticate")
 public class AuthenticateUserController {
 
     @Autowired
